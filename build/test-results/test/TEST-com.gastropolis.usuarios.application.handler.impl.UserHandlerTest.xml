@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.gastropolis.usuarios.application.handler.impl.UserHandlerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-03-24T00:57:02" hostname="DESKTOP-6U4UTQC" time="5.178">
+  <properties/>
+  <testcase name="login_success_returnsLoginResponseDto()" classname="com.gastropolis.usuarios.application.handler.impl.UserHandlerTest" time="4.975"/>
+  <testcase name="login_invalidPassword_throwsInvalidCredentialsException()" classname="com.gastropolis.usuarios.application.handler.impl.UserHandlerTest" time="0.054"/>
+  <testcase name="createEmployee_success_returnsUserResponseDto()" classname="com.gastropolis.usuarios.application.handler.impl.UserHandlerTest" time="0.025"/>
+  <testcase name="createOwner_success_returnsUserResponseDto()" classname="com.gastropolis.usuarios.application.handler.impl.UserHandlerTest" time="0.019"/>
+  <testcase name="createClient_success_returnsUserResponseDto()" classname="com.gastropolis.usuarios.application.handler.impl.UserHandlerTest" time="0.019"/>
+  <testcase name="getUserById_success_returnsUserResponseDto()" classname="com.gastropolis.usuarios.application.handler.impl.UserHandlerTest" time="0.034"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

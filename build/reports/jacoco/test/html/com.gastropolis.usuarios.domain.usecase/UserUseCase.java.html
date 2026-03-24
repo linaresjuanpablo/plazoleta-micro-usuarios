@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ms-usuarios</a> &gt; <a href="index.source.html" class="el_package">com.gastropolis.usuarios.domain.usecase</a> &gt; <span class="el_source">UserUseCase.java</span></div><h1>UserUseCase.java</h1><pre class="source lang-java linenums">package com.gastropolis.usuarios.domain.usecase;
+
+import com.gastropolis.usuarios.domain.api.IUserServicePort;
+import com.gastropolis.usuarios.domain.exception.InvalidAgeException;
+import com.gastropolis.usuarios.domain.exception.UserAlreadyExistsException;
+import com.gastropolis.usuarios.domain.exception.UserNotFoundException;
+import com.gastropolis.usuarios.domain.model.RoleModel;
+import com.gastropolis.usuarios.domain.model.UserModel;
+import com.gastropolis.usuarios.domain.spi.IPasswordEncoderPort;
+import com.gastropolis.usuarios.domain.spi.IUserPersistencePort;
+
+import java.time.LocalDate;
+import java.time.Period;
+
+public class UserUseCase implements IUserServicePort {
+
+    private static final String ROLE_PROPIETARIO = &quot;PROPIETARIO&quot;;
+    private static final String ROLE_EMPLEADO = &quot;EMPLEADO&quot;;
+    private static final String ROLE_CLIENTE = &quot;CLIENTE&quot;;
+    private static final int MINIMUM_AGE = 18;
+
+    private final IUserPersistencePort userPersistencePort;
+    private final IPasswordEncoderPort passwordEncoderPort;
+
+    public UserUseCase(IUserPersistencePort userPersistencePort,
+<span class="fc" id="L26">                       IPasswordEncoderPort passwordEncoderPort) {</span>
+<span class="fc" id="L27">        this.userPersistencePort = userPersistencePort;</span>
+<span class="fc" id="L28">        this.passwordEncoderPort = passwordEncoderPort;</span>
+<span class="fc" id="L29">    }</span>
+
+    @Override
+    public UserModel createOwner(UserModel userModel) {
+<span class="fc" id="L33">        validateEmailUniqueness(userModel.getEmail());</span>
+<span class="fc" id="L34">        validateDniUniqueness(userModel.getDni());</span>
+<span class="fc" id="L35">        validateBirthDateRequired(userModel.getBirthDate());</span>
+<span class="fc" id="L36">        validateMinimumAge(userModel.getBirthDate());</span>
+
+<span class="fc" id="L38">        RoleModel role = userPersistencePort.findRoleByName(ROLE_PROPIETARIO)</span>
+<span class="fc" id="L39">                .orElseThrow(() -&gt; new RuntimeException(&quot;Role PROPIETARIO not found&quot;));</span>
+
+<span class="fc" id="L41">        userModel.setRole(role);</span>
+<span class="fc" id="L42">        userModel.setPassword(passwordEncoderPort.encode(userModel.getPassword()));</span>
+<span class="fc" id="L43">        return userPersistencePort.saveUser(userModel);</span>
+    }
+
+    @Override
+    public UserModel createEmployee(UserModel userModel) {
+<span class="fc" id="L48">        validateEmailUniqueness(userModel.getEmail());</span>
+<span class="fc" id="L49">        validateDniUniqueness(userModel.getDni());</span>
+
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (userModel.getBirthDate() != null) {</span>
+<span class="fc" id="L52">            validateMinimumAge(userModel.getBirthDate());</span>
+        }
+
+<span class="fc" id="L55">        RoleModel role = userPersistencePort.findRoleByName(ROLE_EMPLEADO)</span>
+<span class="fc" id="L56">                .orElseThrow(() -&gt; new RuntimeException(&quot;Role EMPLEADO not found&quot;));</span>
+
+<span class="fc" id="L58">        userModel.setRole(role);</span>
+<span class="fc" id="L59">        userModel.setPassword(passwordEncoderPort.encode(userModel.getPassword()));</span>
+<span class="fc" id="L60">        return userPersistencePort.saveUser(userModel);</span>
+    }
+
+    @Override
+    public UserModel createClient(UserModel userModel) {
+<span class="fc" id="L65">        validateEmailUniqueness(userModel.getEmail());</span>
+<span class="fc" id="L66">        validateDniUniqueness(userModel.getDni());</span>
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (userModel.getBirthDate() != null) {</span>
+<span class="fc" id="L69">            validateMinimumAge(userModel.getBirthDate());</span>
+        }
+
+<span class="fc" id="L72">        RoleModel role = userPersistencePort.findRoleByName(ROLE_CLIENTE)</span>
+<span class="fc" id="L73">                .orElseThrow(() -&gt; new RuntimeException(&quot;Role CLIENTE not found&quot;));</span>
+
+<span class="fc" id="L75">        userModel.setRole(role);</span>
+<span class="fc" id="L76">        userModel.setPassword(passwordEncoderPort.encode(userModel.getPassword()));</span>
+<span class="fc" id="L77">        return userPersistencePort.saveUser(userModel);</span>
+    }
+
+    @Override
+    public UserModel getUserById(Long id) {
+<span class="fc" id="L82">        return userPersistencePort.findUserById(id)</span>
+<span class="fc" id="L83">                .orElseThrow(() -&gt; new UserNotFoundException(&quot;User not found with id: &quot; + id));</span>
+    }
+
+    @Override
+    public UserModel getUserByEmail(String email) {
+<span class="fc" id="L88">        return userPersistencePort.findUserByEmail(email)</span>
+<span class="fc" id="L89">                .orElseThrow(() -&gt; new UserNotFoundException(&quot;User not found with email: &quot; + email));</span>
+    }
+
+    private void validateEmailUniqueness(String email) {
+<span class="fc bfc" id="L93" title="All 2 branches covered.">        if (userPersistencePort.existsUserByEmail(email)) {</span>
+<span class="fc" id="L94">            throw new UserAlreadyExistsException(&quot;User already exists with email: &quot; + email);</span>
+        }
+<span class="fc" id="L96">    }</span>
+
+    private void validateDniUniqueness(String dni) {
+<span class="fc bfc" id="L99" title="All 2 branches covered.">        if (userPersistencePort.existsUserByDni(dni)) {</span>
+<span class="fc" id="L100">            throw new UserAlreadyExistsException(&quot;User already exists with DNI: &quot; + dni);</span>
+        }
+<span class="fc" id="L102">    }</span>
+
+    private void validateBirthDateRequired(LocalDate birthDate) {
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        if (birthDate == null) {</span>
+<span class="fc" id="L106">            throw new InvalidAgeException(&quot;Birth date is required for owner registration&quot;);</span>
+        }
+<span class="fc" id="L108">    }</span>
+
+    private void validateMinimumAge(LocalDate birthDate) {
+<span class="fc" id="L111">        LocalDate today = LocalDate.now();</span>
+<span class="fc" id="L112">        int age = Period.between(birthDate, today).getYears();</span>
+<span class="fc bfc" id="L113" title="All 2 branches covered.">        if (age &lt; MINIMUM_AGE) {</span>
+<span class="fc" id="L114">            throw new InvalidAgeException(&quot;User must be at least 18 years old. Current age: &quot; + age);</span>
+        }
+<span class="fc" id="L116">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

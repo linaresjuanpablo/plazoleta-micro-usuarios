@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" tests="22" skipped="0" failures="0" errors="0" timestamp="2026-03-24T00:57:07" hostname="DESKTOP-6U4UTQC" time="0.523">
+  <properties/>
+  <testcase name="getUserByEmail_userNotFound_throwsUserNotFoundException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.174"/>
+  <testcase name="createOwner_emailAlreadyExists_throwsUserAlreadyExistsException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.009"/>
+  <testcase name="createEmployee_happyPath_noBirthDate_returnsSavedUser()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.027"/>
+  <testcase name="createClient_ageLessThan18_throwsInvalidAgeException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.026"/>
+  <testcase name="createEmployee_dniAlreadyExists_throwsUserAlreadyExistsException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.009"/>
+  <testcase name="createClient_happyPath_withBirthDate_returnsSavedUser()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.012"/>
+  <testcase name="createClient_emailAlreadyExists_throwsUserAlreadyExistsException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.01"/>
+  <testcase name="createClient_happyPath_noBirthDate_returnsSavedUser()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.016"/>
+  <testcase name="getUserById_userFound_returnsUser()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.007"/>
+  <testcase name="getUserByEmail_userFound_returnsUser()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.011"/>
+  <testcase name="createEmployee_happyPath_withBirthDate_returnsSavedUser()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.01"/>
+  <testcase name="createOwner_happyPath_returnsSavedUser()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.017"/>
+  <testcase name="createOwner_birthDateNull_throwsInvalidAgeException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.007"/>
+  <testcase name="createOwner_dniAlreadyExists_throwsUserAlreadyExistsException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.009"/>
+  <testcase name="createEmployee_emailAlreadyExists_throwsUserAlreadyExistsException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.008"/>
+  <testcase name="createOwner_roleNotFound_throwsRuntimeException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.011"/>
+  <testcase name="getUserById_userNotFound_throwsUserNotFoundException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.012"/>
+  <testcase name="createOwner_ageLessThan18_throwsInvalidAgeException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.009"/>
+  <testcase name="createEmployee_ageLessThan18_throwsInvalidAgeException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.009"/>
+  <testcase name="createClient_roleNotFound_throwsRuntimeException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.012"/>
+  <testcase name="createClient_dniAlreadyExists_throwsUserAlreadyExistsException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.016"/>
+  <testcase name="createEmployee_roleNotFound_throwsRuntimeException()" classname="com.gastropolis.usuarios.domain.usecase.UserUseCaseTest" time="0.01"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

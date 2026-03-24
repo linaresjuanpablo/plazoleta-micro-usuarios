@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ms-usuarios</a> &gt; <a href="index.source.html" class="el_package">com.gastropolis.usuarios.application.handler.impl</a> &gt; <span class="el_source">UserHandler.java</span></div><h1>UserHandler.java</h1><pre class="source lang-java linenums">package com.gastropolis.usuarios.application.handler.impl;
+
+import com.gastropolis.usuarios.application.dto.request.CreateUserRequestDto;
+import com.gastropolis.usuarios.application.dto.request.LoginRequestDto;
+import com.gastropolis.usuarios.application.dto.response.LoginResponseDto;
+import com.gastropolis.usuarios.application.dto.response.UserResponseDto;
+import com.gastropolis.usuarios.application.handler.IUserHandler;
+import com.gastropolis.usuarios.application.mapper.IUserRequestMapper;
+import com.gastropolis.usuarios.application.mapper.IUserResponseMapper;
+import com.gastropolis.usuarios.domain.api.IUserServicePort;
+import com.gastropolis.usuarios.domain.exception.InvalidCredentialsException;
+import com.gastropolis.usuarios.domain.model.UserModel;
+import com.gastropolis.usuarios.domain.spi.IPasswordEncoderPort;
+import com.gastropolis.usuarios.infrastructure.security.JwtService;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class UserHandler implements IUserHandler {
+
+    private final IUserServicePort userServicePort;
+    private final IUserRequestMapper userRequestMapper;
+    private final IUserResponseMapper userResponseMapper;
+    private final JwtService jwtService;
+    private final IPasswordEncoderPort passwordEncoderPort;
+
+    public UserHandler(IUserServicePort userServicePort,
+                       IUserRequestMapper userRequestMapper,
+                       IUserResponseMapper userResponseMapper,
+                       JwtService jwtService,
+<span class="fc" id="L32">                       IPasswordEncoderPort passwordEncoderPort) {</span>
+<span class="fc" id="L33">        this.userServicePort = userServicePort;</span>
+<span class="fc" id="L34">        this.userRequestMapper = userRequestMapper;</span>
+<span class="fc" id="L35">        this.userResponseMapper = userResponseMapper;</span>
+<span class="fc" id="L36">        this.jwtService = jwtService;</span>
+<span class="fc" id="L37">        this.passwordEncoderPort = passwordEncoderPort;</span>
+<span class="fc" id="L38">    }</span>
+
+    @Override
+    public UserResponseDto createOwner(CreateUserRequestDto createUserRequestDto) {
+<span class="fc" id="L42">        UserModel userModel = userRequestMapper.toUserModel(createUserRequestDto);</span>
+<span class="fc" id="L43">        UserModel savedUser = userServicePort.createOwner(userModel);</span>
+<span class="fc" id="L44">        return userResponseMapper.toUserResponseDto(savedUser);</span>
+    }
+
+    @Override
+    public UserResponseDto createEmployee(CreateUserRequestDto createUserRequestDto) {
+<span class="fc" id="L49">        UserModel userModel = userRequestMapper.toUserModel(createUserRequestDto);</span>
+<span class="fc" id="L50">        UserModel savedUser = userServicePort.createEmployee(userModel);</span>
+<span class="fc" id="L51">        return userResponseMapper.toUserResponseDto(savedUser);</span>
+    }
+
+    @Override
+    public UserResponseDto createClient(CreateUserRequestDto createUserRequestDto) {
+<span class="fc" id="L56">        UserModel userModel = userRequestMapper.toUserModel(createUserRequestDto);</span>
+<span class="fc" id="L57">        UserModel savedUser = userServicePort.createClient(userModel);</span>
+<span class="fc" id="L58">        return userResponseMapper.toUserResponseDto(savedUser);</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public UserResponseDto getUserById(Long id) {
+<span class="fc" id="L64">        UserModel userModel = userServicePort.getUserById(id);</span>
+<span class="fc" id="L65">        return userResponseMapper.toUserResponseDto(userModel);</span>
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public LoginResponseDto login(LoginRequestDto loginRequestDto) {
+<span class="fc" id="L71">        UserModel userModel = userServicePort.getUserByEmail(loginRequestDto.getEmail());</span>
+
+<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (!passwordEncoderPort.matches(loginRequestDto.getPassword(), userModel.getPassword())) {</span>
+<span class="fc" id="L74">            throw new InvalidCredentialsException(&quot;Invalid email or password&quot;);</span>
+        }
+
+<span class="fc" id="L77">        String token = jwtService.generateToken(userModel);</span>
+<span class="fc" id="L78">        return new LoginResponseDto(token);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

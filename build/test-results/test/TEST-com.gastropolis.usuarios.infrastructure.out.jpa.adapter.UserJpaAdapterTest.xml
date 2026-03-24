@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2026-03-24T00:57:08" hostname="DESKTOP-6U4UTQC" time="1.425">
+  <properties/>
+  <testcase name="existsUserByEmail_emailNotExists_returnsFalse()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.682"/>
+  <testcase name="findUserByDni_userNotExists_returnsEmptyOptional()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.006"/>
+  <testcase name="findUserById_userNotExists_returnsEmptyOptional()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.061"/>
+  <testcase name="saveUser_success_returnsSavedUserModel()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.521"/>
+  <testcase name="findRoleByName_roleExists_returnsOptionalWithRole()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.018"/>
+  <testcase name="existsUserByDni_dniNotExists_returnsFalse()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.006"/>
+  <testcase name="existsUserByDni_dniExists_returnsTrue()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.005"/>
+  <testcase name="findUserByDni_userExists_returnsOptionalWithUser()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.007"/>
+  <testcase name="findUserById_userExists_returnsOptionalWithUser()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.01"/>
+  <testcase name="findUserByEmail_userNotExists_returnsEmptyOptional()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.015"/>
+  <testcase name="findUserByEmail_userExists_returnsOptionalWithUser()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.015"/>
+  <testcase name="existsUserByEmail_emailExists_returnsTrue()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.009"/>
+  <testcase name="findRoleByName_roleNotExists_returnsEmptyOptional()" classname="com.gastropolis.usuarios.infrastructure.out.jpa.adapter.UserJpaAdapterTest" time="0.012"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

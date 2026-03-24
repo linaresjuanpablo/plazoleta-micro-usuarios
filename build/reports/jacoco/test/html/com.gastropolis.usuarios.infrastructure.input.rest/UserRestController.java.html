@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserRestController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">ms-usuarios</a> &gt; <a href="index.source.html" class="el_package">com.gastropolis.usuarios.infrastructure.input.rest</a> &gt; <span class="el_source">UserRestController.java</span></div><h1>UserRestController.java</h1><pre class="source lang-java linenums">package com.gastropolis.usuarios.infrastructure.input.rest;
+
+import com.gastropolis.usuarios.application.dto.request.CreateUserRequestDto;
+import com.gastropolis.usuarios.application.dto.response.UserResponseDto;
+import com.gastropolis.usuarios.application.handler.IUserHandler;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(&quot;/api/v1/user&quot;)
+@Tag(name = &quot;User Management&quot;, description = &quot;Endpoints for managing users&quot;)
+public class UserRestController {
+
+    private final IUserHandler userHandler;
+
+<span class="fc" id="L23">    public UserRestController(IUserHandler userHandler) {</span>
+<span class="fc" id="L24">        this.userHandler = userHandler;</span>
+<span class="fc" id="L25">    }</span>
+
+    @Operation(
+            summary = &quot;Create Owner (HU1)&quot;,
+            description = &quot;Creates a new owner user. Requires ADMINISTRADOR role. BirthDate is mandatory and user must be 18+.&quot;
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;201&quot;, description = &quot;Owner created successfully&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid input data or user under 18&quot;),
+            @ApiResponse(responseCode = &quot;409&quot;, description = &quot;User already exists with given email or DNI&quot;),
+            @ApiResponse(responseCode = &quot;403&quot;, description = &quot;Access denied&quot;)
+    })
+    @PostMapping(&quot;/&quot;)
+    @PreAuthorize(&quot;hasAuthority('ADMINISTRADOR')&quot;)
+    public ResponseEntity&lt;UserResponseDto&gt; createOwner(@Valid @RequestBody CreateUserRequestDto createUserRequestDto) {
+<span class="fc" id="L40">        UserResponseDto response = userHandler.createOwner(createUserRequestDto);</span>
+<span class="fc" id="L41">        return ResponseEntity.status(HttpStatus.CREATED).body(response);</span>
+    }
+
+    @Operation(
+            summary = &quot;Create Employee (HU6)&quot;,
+            description = &quot;Creates a new employee user. Requires PROPIETARIO role. BirthDate is optional.&quot;
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;201&quot;, description = &quot;Employee created successfully&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid input data&quot;),
+            @ApiResponse(responseCode = &quot;409&quot;, description = &quot;User already exists with given email or DNI&quot;),
+            @ApiResponse(responseCode = &quot;403&quot;, description = &quot;Access denied&quot;)
+    })
+    @PostMapping(&quot;/owner/employee&quot;)
+    @PreAuthorize(&quot;hasAuthority('PROPIETARIO')&quot;)
+    public ResponseEntity&lt;UserResponseDto&gt; createEmployee(@Valid @RequestBody CreateUserRequestDto createUserRequestDto) {
+<span class="fc" id="L57">        UserResponseDto response = userHandler.createEmployee(createUserRequestDto);</span>
+<span class="fc" id="L58">        return ResponseEntity.status(HttpStatus.CREATED).body(response);</span>
+    }
+
+    @Operation(
+            summary = &quot;Create Client (HU8)&quot;,
+            description = &quot;Creates a new client user. Public endpoint. BirthDate is optional.&quot;
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;201&quot;, description = &quot;Client created successfully&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;Invalid input data&quot;),
+            @ApiResponse(responseCode = &quot;409&quot;, description = &quot;User already exists with given email or DNI&quot;)
+    })
+    @PostMapping(&quot;/client&quot;)
+    public ResponseEntity&lt;UserResponseDto&gt; createClient(@Valid @RequestBody CreateUserRequestDto createUserRequestDto) {
+<span class="fc" id="L72">        UserResponseDto response = userHandler.createClient(createUserRequestDto);</span>
+<span class="fc" id="L73">        return ResponseEntity.status(HttpStatus.CREATED).body(response);</span>
+    }
+
+    @Operation(
+            summary = &quot;Get user by ID&quot;,
+            description = &quot;Retrieves a user by their ID. Used internally by other microservices. Requires authentication.&quot;
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;User found&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;User not found&quot;),
+            @ApiResponse(responseCode = &quot;401&quot;, description = &quot;Unauthorized&quot;)
+    })
+    @GetMapping(&quot;/{id}&quot;)
+    public ResponseEntity&lt;UserResponseDto&gt; getUserById(@PathVariable Long id) {
+<span class="fc" id="L87">        UserResponseDto response = userHandler.getUserById(id);</span>
+<span class="fc" id="L88">        return ResponseEntity.ok(response);</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
