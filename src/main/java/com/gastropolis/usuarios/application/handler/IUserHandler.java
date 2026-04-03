@@ -16,4 +16,6 @@ public interface IUserHandler {
     UserResponseDto getUserById(Long id);
 
     LoginResponseDto login(LoginRequestDto loginRequestDto);
+
+    UserResponseDto getUserByDni(String dni);
 }

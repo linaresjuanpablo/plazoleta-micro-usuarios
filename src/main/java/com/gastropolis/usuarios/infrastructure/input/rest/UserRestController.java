@@ -87,4 +87,19 @@ public class UserRestController {
         UserResponseDto response = userHandler.getUserById(id);
         return ResponseEntity.ok(response);
     }
+
+    @Operation(
+            summary = "Get user by DNI",
+            description = "Retrieves a user by their DNI. Used internally by other microservices. Requires authentication."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User found"),
+            @ApiResponse(responseCode = "404", description = "User not found"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized")
+    })
+    @GetMapping("/dni/{dni}")
+    public ResponseEntity<UserResponseDto> getUserByDni(@PathVariable String dni) {
+        UserResponseDto response = userHandler.getUserByDni(dni);
+        return ResponseEntity.ok(response);
+    }
 }

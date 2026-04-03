@@ -13,4 +13,6 @@ public interface IUserServicePort {
     UserModel getUserById(Long id);
 
     UserModel getUserByEmail(String email);
+
+    UserModel getUserByDni(String dni);
 }

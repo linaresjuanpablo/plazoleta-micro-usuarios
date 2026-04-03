@@ -89,6 +89,12 @@ public class UserUseCase implements IUserServicePort {
                 .orElseThrow(() -> new UserNotFoundException("User not found with email: " + email));
     }
 
+    @Override
+    public UserModel getUserByDni(String dni) {
+        return userPersistencePort.findUserByDni(dni)
+                .orElseThrow(() -> new UserNotFoundException("User not found with DNI: " + dni));
+    }
+
     private void validateEmailUniqueness(String email) {
         if (userPersistencePort.existsUserByEmail(email)) {
             throw new UserAlreadyExistsException("User already exists with email: " + email);

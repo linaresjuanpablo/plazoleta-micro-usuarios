@@ -67,6 +67,13 @@ public class UserHandler implements IUserHandler {
 
     @Override
     @Transactional(readOnly = true)
+    public UserResponseDto getUserByDni(String dni) {
+        UserModel userModel = userServicePort.getUserByDni(dni);
+        return userResponseMapper.toUserResponseDto(userModel);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public LoginResponseDto login(LoginRequestDto loginRequestDto) {
         UserModel userModel = userServicePort.getUserByEmail(loginRequestDto.getEmail());
 
